@@ -1,4 +1,5 @@
-﻿namespace Cashlab;
+﻿using System.Windows.Media;
+namespace Cashlab;
 
 public class QueueGenerator
 {
@@ -6,6 +7,7 @@ public class QueueGenerator
     private int maxGenerateTime;
     private int minClientCount;
     private int maxClientCount;
+
     public int MinGenerateTime
     {
         get { return minGenerateTime; }
@@ -55,12 +57,17 @@ public class QueueGenerator
     public async Task<List<Client>> Generate()
     {
         Random random = new Random();
-        await Task.Delay(random.Next(MinGenerateTime,MaxGenerateTime)*1000);
+        await Task.Delay(random.Next(MinGenerateTime, MaxGenerateTime) * 1000);
         List<Client> clients = new();
 
-        for (int i = 0; i < random.Next(MinClientCount,MaxClientCount); i++)
+        for (int i = 0; i < random.Next(MinClientCount, MaxClientCount); i++)
         {
-            SolidBrush color = new SolidBrush(Color.FromArgb(random.Next(255), random.Next(255), random.Next(255)));
+            Brush color = new SolidColorBrush(
+                Color.FromArgb(
+                    (byte)random.Next(255), 
+                    (byte)random.Next(255), 
+                    (byte)random.Next(255),
+                    255));
             clients.Add(new Client(color));
         }
 

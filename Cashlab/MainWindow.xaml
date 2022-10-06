@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800">
     <Window.DataContext>
-        <local:CashViewModel/>
+        <local:ShopViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -16,38 +16,20 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1">
-            <!--<ListBox ItemsSource="{Binding Cashes}" Margin="10" Height="400">
+            <ListBox ItemsSource="{Binding Cashes}" Margin="10" Height="500">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="10">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Касса - "/>
-                                <TextBlock Text="{Binding Path = Id}"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10" >
+                                <TextBlock Text="{Binding StringFormat=Касса - {0}, Path =Id}" Margin="5"/>
+                                <TextBlock Text="{Binding StringFormat=Кол-во человек - {0}, Path =Clients.Count}" Margin="5"/>
                             </StackPanel>
-
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Количество человек в очереди - "/>
-                                <TextBlock Text="{Binding Path = ClientCount}"/>
-                            </StackPanel>
-                        </StackPanel>
-                        
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-            </ListBox>-->
-            <StackPanel DataContext="{Binding SelectCash}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Касса - "/>
-                    <TextBlock Text="{Binding Path = Id}"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Количество человек в очереди - "/>
-                    <TextBlock Text="{Binding Path = ClientCount}"/>
-                </StackPanel>
+            </ListBox>
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <Button Command="{Binding AddQueue}" Width="20" Height="20" Content="+"/>
             </StackPanel>
-            
-
         </StackPanel>
-
+            
     </Grid>
 </Window>

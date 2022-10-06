@@ -1,27 +1,20 @@
-﻿
-
-namespace Cashlab;
+﻿namespace Cashlab;
 
 public class Cash : IServeClient, INotifyPropertyChanged
 {
     private int id = 0;
-
-    private Queue<Client> clients;
+    private ObservableCollection<Client> clients;
     private bool isOpen = true;
-    private (int minTime, int maxTime) serviceTime = (0, 0);
-    private double avgServiceTime = 0;
-    private int orderCount = 0;
-    private int timeServiceCount = 0;
-    private int clientCount = 0;
+    private (int minTime, int maxTime) serviceTime;
     private Random random;
 
-    public Queue<Client> Clients
+     
+    public ObservableCollection<Client> Clients
     {
         get { return clients; }
         set
         {
             clients = value;
-            ClientCount = clients.Count;
             OnPropertyChanged();
         }
     }
@@ -43,33 +36,6 @@ public class Cash : IServeClient, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    public double AvgServiceTime
-    {
-        get { return avgServiceTime; }
-        private set
-        {
-            avgServiceTime = value;
-            OnPropertyChanged();
-        }
-    }
-    public int OrderCount
-    {
-        get { return orderCount; }
-        private set
-        {
-            orderCount = value;
-            OnPropertyChanged();
-        }
-    }
-    public int TimeServiceCount
-    {
-        get { return timeServiceCount; }
-        private set
-        {
-            timeServiceCount = value;
-            OnPropertyChanged();
-        }
-    }
     public int Id
     {
         get { return id; }
@@ -79,58 +45,45 @@ public class Cash : IServeClient, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    public int ClientCount
-    {
-        get { return clientCount; }
-        private set
-        {
-            clientCount = value;
-            OnPropertyChanged();
-        }
-    }
-
     public Cash(int id)
     {
         Id = id;
         Clients = new();
-        ServiceTime = (1, 2000);
-        AvgServiceTime = 0;
-        OrderCount = 0;
-        TimeServiceCount = 0;
-        ClientCount = 0;
+        ServiceTime = (1000, 5000);
         random = new Random();
     }
 
     public async Task ServeClient(int time)
     {
         await Task.Delay(time);
-        Clients.Dequeue();
-        OrderCount++;
-        ClientCount--;
-        TimeServiceCount += time;
+        Clients.RemoveAt(0);
     }
 
     public async Task AddClient(Client client)
     {
         await Task.Delay(0);
-        Clients.Enqueue(client);
-        ClientCount++;
+        Clients.Add(client);
     }
 
     public async Task Start()
     {
         while (IsOpen)
         {
-            await Task.Delay(100);
-            if (ClientCount <= 0)
+            await Task.Delay(10);
+            if (Clients.Count <= 0)
             {
                 continue;
             }
-            int time = await GenerateTime();
-            await ServeClient(time);
+            await ServeClientRandomInterval();
 
         }
-          
+
+    }
+
+    private async Task ServeClientRandomInterval()
+    {
+        int time = await GenerateTime();
+        await ServeClient(time);
     }
 
     private async Task<int> GenerateTime()

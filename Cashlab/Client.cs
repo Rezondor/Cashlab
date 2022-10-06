@@ -1,17 +1,44 @@
-﻿using System.Drawing;
-
+﻿using System.Windows.Media;
 namespace Cashlab;
 
-public class Client
+public class Client : INotifyPropertyChanged
 {
     private static int clientCount = 0;
-    private int id = 0;
-    public SolidBrush Color{ get; set; }
+    private int id;
+    private Brush color;
 
-    public Client(SolidBrush color)
+    public int Id
+    {
+        get { return id; }
+        set
+        {
+            id = value;
+            OnPropertyChanged();
+        }
+    }
+    public Brush Color
+    {
+        get { return color; }
+        set
+        {
+            color = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Client(Brush color)
     {
         clientCount += 1;
-        id = clientCount;
+        Id = clientCount;
         Color = color;
     }
+
+    #region MVVM 
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void OnPropertyChanged([CallerMemberName] string prop = "")
+    {
+        if (PropertyChanged != null)
+            PropertyChanged(this, new PropertyChangedEventArgs(prop));
+    }
+    #endregion
 }
