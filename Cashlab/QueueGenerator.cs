@@ -64,8 +64,8 @@ public class QueueGenerator
         {
             Brush color = new SolidColorBrush(
                 Color.FromArgb(
-                    (byte)random.Next(255), 
-                    (byte)random.Next(255), 
+                    (byte)random.Next(255),
+                    (byte)random.Next(255),
                     (byte)random.Next(255),
                     255));
             clients.Add(new Client(color));

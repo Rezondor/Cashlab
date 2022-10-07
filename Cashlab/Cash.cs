@@ -8,7 +8,7 @@ public class Cash : IServeClient, INotifyPropertyChanged
     private (int minTime, int maxTime) serviceTime;
     private Random random;
 
-     
+
     public ObservableCollection<Client> Clients
     {
         get { return clients; }
