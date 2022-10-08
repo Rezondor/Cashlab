@@ -57,7 +57,7 @@ public class QueueGenerator
     public async Task<List<Client>> Generate()
     {
         Random random = new Random();
-        await Task.Delay(random.Next(MinGenerateTime, MaxGenerateTime) * 1000);
+        var wait = Task.Delay(random.Next(MinGenerateTime, MaxGenerateTime) * 1000);
         List<Client> clients = new();
         int count = random.Next(MinClientCount, MaxClientCount);
         for (int i = 0; i < count; i++)
@@ -70,7 +70,7 @@ public class QueueGenerator
                     255));
             clients.Add(new Client(color));
         }
-
+        await wait;
         return clients;
     }
 

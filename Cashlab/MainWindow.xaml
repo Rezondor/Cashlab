@@ -142,7 +142,8 @@
                                                 Minimum="{Binding MinTimeService}"
                                                 Width="50" 
                                                 Margin="2" 
-                                                DefaultValue="0" CultureInfo="ru-RU" />
+                                                DefaultValue="0" 
+                                                CultureInfo="ru-RU" />
 
                                     </StackPanel>
 
@@ -156,18 +157,42 @@
             
             <StackPanel 
                 Orientation="Horizontal" 
-                Margin="10">
+                Margin="10"
+                >
                 
                 <Button 
-                    Command="{Binding AddQueue}" 
+                    Command="{Binding AddQueue, IsAsync=True}" 
                     Width="20" 
                     Margin="10"
                     Height="20" 
                     Content="+"/>
 
                 <TextBlock 
-                    Text="{Binding CountClients}"
+                    Text="{Binding CountClients, StringFormat=Сгенерировано человек {0}}"
+                    Margin="10" 
+                    Width="200"/>
+
+                <TextBlock 
+                    Text="Максимальное время генирации очереди -"
                     Margin="10"/>
+                <tk:IntegerUpDown  
+                    Value="{Binding MaxTimeClientsGenerate}"
+                    Minimum="1"
+                    Width="50" 
+                    Margin="10" 
+                    DefaultValue="0" 
+                    CultureInfo="ru-RU" />
+                
+                <TextBlock 
+                    Text="Максимальное кол-во человек для генирации очереди -"
+                    Margin="10"/>
+                <tk:IntegerUpDown  
+                    Value="{Binding MaxCountClientsGenerate}"
+                    Width="50" 
+                    Margin="10" 
+                    DefaultValue="0" 
+                    Minimum= "1"
+                    CultureInfo="ru-RU" />
             </StackPanel>
         </StackPanel>
             

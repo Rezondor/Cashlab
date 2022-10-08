@@ -3,9 +3,29 @@ namespace Cashlab;
 
 public class ShopViewModel : INotifyPropertyChanged
 {
-    private CommandTemplate addQueue;
-    private int countClients;
     private ObservableCollection<Cash> cashes;
+    private int countClients;
+    private CommandTemplate addQueue;
+
+    private int maxCountClientsGenerate;
+    private int maxTimeClientsGenerate;
+
+    public int MaxCountClientsGenerate
+    {
+        get { return maxCountClientsGenerate; }
+        set { 
+            maxCountClientsGenerate = value;
+            OnPropertyChanged();
+        }
+    } 
+    public int MaxTimeClientsGenerate
+    {
+        get { return maxTimeClientsGenerate; }
+        set {
+            maxTimeClientsGenerate = value;
+            OnPropertyChanged();
+        }
+    }
 
     public int CountClients
     {
@@ -22,14 +42,13 @@ public class ShopViewModel : INotifyPropertyChanged
             return addQueue ??
                 (addQueue = new CommandTemplate(async obj =>
                 {
-                    var aa = await gg();
-                    CountClients = aa.Count;
-                    Clients.AddRange(aa);
-                    GoQueue();
+                    List<Client> clients = await gg();
+                    CountClients = clients.Count;
+                    
+                    await GoQueue(clients);
                 }));
         }
     }
-    public List<Client> Clients { get; set; }
     public ObservableCollection<Cash> Cashes
     {
         get { return cashes; }
@@ -43,8 +62,9 @@ public class ShopViewModel : INotifyPropertyChanged
     public ShopViewModel()
     {
         Cashes = new ObservableCollection<Cash>();
-        Clients = new();
-
+        List <Client> clients = new();
+        MaxTimeClientsGenerate = 1;
+        MaxCountClientsGenerate = 50;
         for (int i = 0; i < 7; i++)
         {
             Cashes.Add(new Cash(i + 1));
@@ -53,27 +73,35 @@ public class ShopViewModel : INotifyPropertyChanged
 
         for (int i = 0; i <= 5; i++)
         {
-            Clients.Add(new Client(new SolidColorBrush(Colors.Black)));
+            clients.Add(new Client(new SolidColorBrush(Colors.Black)));
         }
 
-        GoQueue();
+        GoQueue(clients);
     }
 
-    private async void GoQueue()
+    private async Task GoQueue(IEnumerable<Client> enumerable)
     {
-        foreach (var item in Clients)
+        foreach (var item in enumerable)
         {
             await Cashes.
                  Where(c => c.Clients.Count == Cashes.Min(c => c.Clients.Count)).
                  First().
                  AddClient(item);
         }
-        Clients.Clear();
     }
 
     private async Task<List<Client>> gg()
     {
-        return await new QueueGenerator(1, 1000).Generate();
+        return await 
+            new QueueGenerator(
+                MaxTimeClientsGenerate, 
+                MaxCountClientsGenerate)
+            .Generate();
+    }
+
+    public async Task StartGenerate()
+    {
+
     }
 
     #region MVVM 
