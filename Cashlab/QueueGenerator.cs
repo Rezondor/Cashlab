@@ -59,8 +59,8 @@ public class QueueGenerator
         Random random = new Random();
         await Task.Delay(random.Next(MinGenerateTime, MaxGenerateTime) * 1000);
         List<Client> clients = new();
-
-        for (int i = 0; i < random.Next(MinClientCount, MaxClientCount); i++)
+        int count = random.Next(MinClientCount, MaxClientCount);
+        for (int i = 0; i < count; i++)
         {
             Brush color = new SolidColorBrush(
                 Color.FromArgb(

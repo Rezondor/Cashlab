@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cashlab" 
+        xmlns:tk ="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="500" 
@@ -44,30 +45,38 @@
                             BorderBrush="Black"
                             BorderThickness="1"
                             CornerRadius="5"
+                            Height="270"
                             >
-                            <StackPanel 
-                            Orientation="Vertical" 
+                            <Grid 
                             VerticalAlignment="Top" 
                             Margin="10" 
                             HorizontalAlignment="Center"
                             >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="55"/>
+                                    <RowDefinition Height="140"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel 
+                                    Grid.Row="0">
+                                    
+                                    <TextBlock 
+                                        Text="{Binding StringFormat=Касса №{0}, Path =Id}" 
+                                        Margin="5" 
+                                        HorizontalAlignment="Center"/>
 
-                                <TextBlock 
-                                Text="{Binding StringFormat=Касса №{0}, Path =Id}" 
-                                Margin="5" 
-                                HorizontalAlignment="Center"/>
+                                    <TextBlock 
+                                        Text="{Binding StringFormat=Очередь: {0}, Path =Clients.Count}" 
+                                        Margin="5" 
+                                        HorizontalAlignment="Center"/>  
+                                </StackPanel>
 
-                                <TextBlock 
-                                Text="{Binding StringFormat=Очередь: {0}, Path =Clients.Count}" 
-                                Margin="5" 
-                                HorizontalAlignment="Center"/>
-                                
+
                                 <Grid 
-                                Width="100" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Center" 
-                                Height="200"
-                                 >
+                                    Width="100" 
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Top">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25"/>
@@ -105,7 +114,40 @@
                                         </ListBox.ItemTemplate>
                                     </ListBox>
                                 </Grid>
-                            </StackPanel>
+                                
+                                <Grid
+                                    Grid.Row="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0" 
+                                        Text="Время обслуживания"/>
+                                    <StackPanel 
+                                        Orientation="Horizontal" 
+                                        Grid.Row="1" >
+                                        
+                                            <tk:IntegerUpDown  
+                                                Value="{Binding MinTimeService}" 
+                                                Minimum="0"
+                                                Maximum="{Binding MaxTimeService}"
+                                                Width="50" 
+                                                Margin="2" 
+                                                DefaultValue="0" 
+                                                CultureInfo="ru-RU" />
+                                        
+                                            <tk:IntegerUpDown  
+                                                Value="{Binding MaxTimeService}" 
+                                                Minimum="{Binding MinTimeService}"
+                                                Width="50" 
+                                                Margin="2" 
+                                                DefaultValue="0" CultureInfo="ru-RU" />
+
+                                    </StackPanel>
+
+                                </Grid>
+                            </Grid>
 
                         </Border>
                     </DataTemplate>
@@ -119,9 +161,13 @@
                 <Button 
                     Command="{Binding AddQueue}" 
                     Width="20" 
+                    Margin="10"
                     Height="20" 
                     Content="+"/>
-                
+
+                <TextBlock 
+                    Text="{Binding CountClients}"
+                    Margin="10"/>
             </StackPanel>
         </StackPanel>
             

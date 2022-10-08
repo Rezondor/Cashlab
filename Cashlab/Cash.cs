@@ -5,9 +5,9 @@ public class Cash : IServeClient, INotifyPropertyChanged
     private int id = 0;
     private ObservableCollection<Client> clients;
     private bool isOpen = true;
-    private (int minTime, int maxTime) serviceTime;
     private Random random;
-
+    private int minTimeService;
+    private int maxTimeService;
 
     public ObservableCollection<Client> Clients
     {
@@ -18,15 +18,26 @@ public class Cash : IServeClient, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    public (int MinTime, int MaxTime) ServiceTime
+    public int MinTimeService
     {
-        get { return serviceTime; }
+        get { return minTimeService; }
         set
         {
-            serviceTime = value;
+            minTimeService = value;
             OnPropertyChanged();
         }
     }
+    public int MaxTimeService
+    {
+        get { return maxTimeService; }
+        set
+        {
+            maxTimeService = value;
+            OnPropertyChanged();
+        }
+    }
+
+
     public bool IsOpen
     {
         get { return isOpen; }
@@ -49,7 +60,8 @@ public class Cash : IServeClient, INotifyPropertyChanged
     {
         Id = id;
         Clients = new();
-        ServiceTime = (1000, 5000);
+        MinTimeService = 1;
+        MaxTimeService = 5;
         random = new Random();
     }
 
@@ -89,7 +101,7 @@ public class Cash : IServeClient, INotifyPropertyChanged
     private async Task<int> GenerateTime()
     {
         await Task.Delay(0);
-        return random.Next(ServiceTime.MinTime, ServiceTime.MaxTime + 1);
+        return random.Next(MinTimeService * 1000, MaxTimeService * 1000);
     }
 
     #region MVVM

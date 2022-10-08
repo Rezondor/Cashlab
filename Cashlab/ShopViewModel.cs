@@ -4,7 +4,17 @@ namespace Cashlab;
 public class ShopViewModel : INotifyPropertyChanged
 {
     private CommandTemplate addQueue;
+    private int countClients;
+    private ObservableCollection<Cash> cashes;
 
+    public int CountClients
+    {
+        get { return countClients; }
+        set { 
+            countClients = value;
+            OnPropertyChanged();
+        }
+    }
     public CommandTemplate AddQueue
     {
         get
@@ -12,15 +22,14 @@ public class ShopViewModel : INotifyPropertyChanged
             return addQueue ??
                 (addQueue = new CommandTemplate(async obj =>
                 {
-                    Clients.AddRange(await gg());
+                    var aa = await gg();
+                    CountClients = aa.Count;
+                    Clients.AddRange(aa);
                     GoQueue();
                 }));
         }
     }
-
     public List<Client> Clients { get; set; }
-    private ObservableCollection<Cash> cashes;
-
     public ObservableCollection<Cash> Cashes
     {
         get { return cashes; }
@@ -31,17 +40,12 @@ public class ShopViewModel : INotifyPropertyChanged
         }
     }
 
-
     public ShopViewModel()
     {
         Cashes = new ObservableCollection<Cash>();
         Clients = new();
-        Cashes.Add(new Cash(0)
-        {
-            ServiceTime = (0, 0)
-        });
-        
-        for (int i = 0; i < 8; i++)
+
+        for (int i = 0; i < 7; i++)
         {
             Cashes.Add(new Cash(i + 1));
             Cashes[i].Start();
@@ -69,7 +73,7 @@ public class ShopViewModel : INotifyPropertyChanged
 
     private async Task<List<Client>> gg()
     {
-        return await (new QueueGenerator(1,1000)).Generate();
+        return await new QueueGenerator(1, 1000).Generate();
     }
 
     #region MVVM 
