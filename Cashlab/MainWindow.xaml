@@ -12,17 +12,26 @@
     <Window.DataContext>
         <local:ShopViewModel/>
     </Window.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="67*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.RowSpan="2">
+    <ScrollViewer
+        VerticalScrollBarVisibility="Auto">
+        <Border
+        Background="Transparent"
+        BorderThickness="1"
+        BorderBrush="Black"
+        Margin="10"
+        CornerRadius="5">
+        <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="67*"/>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
 
-            <ListBox 
+                <StackPanel Grid.Row="1" Grid.RowSpan="2">
+
+                    <ListBox 
                 ItemsSource="{Binding Cashes}" 
                 SelectedItem="{Binding SelectedCash}"
                 Margin="10" 
@@ -32,60 +41,60 @@
                 Background="Transparent" 
                 BorderThickness="0">
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel 
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel 
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border 
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
                             BorderBrush="Black"
                             BorderThickness="1"
                             CornerRadius="5"
                             Height="270"
                             >
-                            <Grid 
+                                    <Grid 
                             VerticalAlignment="Top" 
                             Margin="10" 
                             HorizontalAlignment="Center"
                             >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="55"/>
-                                    <RowDefinition Height="140"/>
-                                    <RowDefinition Height="50"/>
-                                </Grid.RowDefinitions>
-                                <StackPanel 
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="55"/>
+                                            <RowDefinition Height="140"/>
+                                            <RowDefinition Height="50"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel 
                                     Grid.Row="0">
 
-                                    <TextBlock 
+                                            <TextBlock 
                                         Text="{Binding StringFormat=Касса №{0}, Path =Id}" 
                                         Margin="5" 
                                         HorizontalAlignment="Center"/>
 
-                                    <TextBlock 
+                                            <TextBlock 
                                         Text="{Binding StringFormat=Очередь: {0}, Path =Clients.Count}" 
                                         Margin="5" 
                                         HorizontalAlignment="Center"/>
-                                </StackPanel>
+                                        </StackPanel>
 
 
-                                <Grid 
+                                        <Grid 
                                     Width="100" 
                                     Grid.Row="1"
                                     HorizontalAlignment="Center" 
                                     VerticalAlignment="Top">
 
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
 
-                                    <Rectangle 
+                                            <Rectangle 
                                     Grid.Row="0" 
                                     Height="20" 
                                     Width="30" 
@@ -94,7 +103,7 @@
                                     RadiusY="5" 
                                     StrokeThickness="1"/>
 
-                                    <ListBox  
+                                            <ListBox  
                                     Grid.Row="1" 
                                     ItemsSource="{Binding Clients}" 
                                     HorizontalAlignment="Center" 
@@ -103,34 +112,34 @@
                                     BorderBrush="Transparent" 
                                     Background="Transparent" 
                                     BorderThickness="0">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Rectangle 
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Rectangle 
                                                 Height="10"
                                                 Width="10"
                                                 RadiusX="1"
                                                 RadiusY="1"
                                                 Fill="{Binding Path = Color}"
                                                 Margin="2" Stroke="Black"/>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
 
-                                <Grid
+                                        <Grid
                                     Grid.Row="2">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
                                         Grid.Row="0" 
                                         Text="Время обслуживания"/>
-                                    <StackPanel 
+                                            <StackPanel 
                                         Orientation="Horizontal" 
                                         Grid.Row="1" >
 
-                                        <tk:IntegerUpDown  
+                                                <tk:IntegerUpDown  
                                                 Value="{Binding MinTimeService}" 
                                                 Minimum="0"
                                                 Maximum="{Binding MaxTimeService}"
@@ -139,7 +148,7 @@
                                                 DefaultValue="0" 
                                                 CultureInfo="ru-RU" />
 
-                                        <tk:IntegerUpDown  
+                                                <tk:IntegerUpDown  
                                                 Value="{Binding MaxTimeService}" 
                                                 Minimum="{Binding MinTimeService}"
                                                 Width="50" 
@@ -147,63 +156,48 @@
                                                 DefaultValue="0" 
                                                 CultureInfo="ru-RU" />
 
-                                    </StackPanel>
+                                            </StackPanel>
 
-                                </Grid>
-                            </Grid>
+                                        </Grid>
+                                    </Grid>
 
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-            <StackPanel 
+                    <StackPanel 
                 Orientation="Vertical" 
                 Margin="5"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 >
 
-                <Button 
+                        <Button 
                     Command="{Binding StartStopQueue, IsAsync=True}" 
                     Margin="5"
                     Content="Запуск/Остановка"
                     />
-                <StackPanel 
-                    Orientation="Vertical" 
-                    HorizontalAlignment="Left"
-                    >
-                    <TextBlock 
-                    Text="{Binding QueueGenerator.ClientCountGenerate, StringFormat=Сгенерировано человек - \{0\}}"
-                    Margin="5" 
-                    Width="200"/>
-                    <TextBlock 
-                    Text="{Binding QueueGenerator.ClientTimeGenerate, 
-                            StringFormat=Время генерации - {0}}"
-                    Margin="5" 
-                    Width="200"/>
 
-                </StackPanel>
-                
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock 
                         Text="Максимальное время генирации очереди -"
                         Margin="5"/>
 
-                    <tk:IntegerUpDown  
+                            <tk:IntegerUpDown  
                         Value="{Binding QueueGenerator.MaxGenerateTime}"
                         Minimum="{Binding QueueGenerator.MinGenerateTime}"
                         Width="50" 
                         Margin="5" 
                         DefaultValue="0" 
                         CultureInfo="ru-RU" />
-                </StackPanel>
+                        </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock 
                         Text="Максимальное кол-во человек для генирации очереди -"
                         Margin="5"/>
-                    <tk:IntegerUpDown  
+                            <tk:IntegerUpDown  
                         Value="{Binding QueueGenerator.MaxClientCount}"
                         Width="50" 
                         Margin="5" 
@@ -211,16 +205,16 @@
                         Minimum= "{Binding QueueGenerator.MinClientCount}"
                         CultureInfo="ru-RU" />
 
-                    
-                </StackPanel>
 
-                <Button 
+                        </StackPanel>
+
+                        <Button 
                     Width="auto"
                     Height="20"
                     Command="{Binding AddCash}"
                     Content="+"
                     Margin="5"/>
-                <Button 
+                        <Button 
                     Width="auto"
                     Height="20"
                     Command="{Binding DeleteCash}"
@@ -228,8 +222,12 @@
                     Content="-"
                      Margin="5"/>
 
-            </StackPanel>
-        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
 
-    </Grid>
+            </Grid>
+        </Border>
+
+    </ScrollViewer>
+
 </Window>

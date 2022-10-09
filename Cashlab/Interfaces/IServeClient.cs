@@ -1,4 +1,4 @@
-﻿namespace Cashlab;
+﻿namespace Cashlab.Interfaces;
 
 public interface IServeClient
 {
