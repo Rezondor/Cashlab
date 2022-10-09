@@ -3,10 +3,13 @@ namespace Cashlab;
 
 public class QueueGenerator
 {
+    private Random random;
     private int minGenerateTime;
     private int maxGenerateTime;
     private int minClientCount;
     private int maxClientCount;
+    private int clientCountGenerate;
+    private int clientTimeGenerate;
 
     public int MinGenerateTime
     {
@@ -46,21 +49,48 @@ public class QueueGenerator
     }
 
 
+    public int ClientTimeGenerate
+    {
+        get { return clientTimeGenerate; }
+        set
+        {
+            clientTimeGenerate = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    public int ClientCountGenerate
+    {
+        get { return clientCountGenerate; }
+        set
+        {
+            clientCountGenerate = value;
+            OnPropertyChanged();
+        }
+    }
+
+
     public QueueGenerator(int maxGenerateTime, int maxClientCount)
     {
+        random= new Random();
         MinClientCount = 0;
         MinGenerateTime = 1;
         MaxGenerateTime = maxGenerateTime;
         MaxClientCount = maxClientCount;
+        /*ClientCountGenerate = 0;
+        ClientTimeGenerate = 0;*/
     }
 
     public async Task<List<Client>> Generate()
     {
-        Random random = new Random();
-        var wait = Task.Delay(random.Next(MinGenerateTime, MaxGenerateTime) * 1000);
+        ClientTimeGenerate = random.Next(MinGenerateTime, MaxGenerateTime);
+        var wait = Task.Delay(ClientTimeGenerate * 1000);
+        ClientCountGenerate = random.Next(MinClientCount, MaxClientCount);
+
         List<Client> clients = new();
-        int count = random.Next(MinClientCount, MaxClientCount);
-        for (int i = 0; i < count; i++)
+
+        for (int i = 0; i < ClientCountGenerate; i++)
         {
             Brush color = new SolidColorBrush(
                 Color.FromArgb(
@@ -68,9 +98,12 @@ public class QueueGenerator
                     (byte)random.Next(255),
                     (byte)random.Next(255),
                     255));
+
             clients.Add(new Client(color));
         }
+
         await wait;
+
         return clients;
     }
 

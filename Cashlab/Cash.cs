@@ -2,6 +2,7 @@
 
 public class Cash : IServeClient, INotifyPropertyChanged
 {
+    private static int CountCash = 0;
     private int id = 0;
     private ObservableCollection<Client> clients;
     private bool isOpen = true;
@@ -56,13 +57,16 @@ public class Cash : IServeClient, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    public Cash(int id)
+    public Cash()
     {
-        Id = id;
+        CountCash += 1;
+        Id = CountCash;
+
         Clients = new();
+        random = new Random();
+        
         MinTimeService = 1;
         MaxTimeService = 5;
-        random = new Random();
     }
 
     public async Task ServeClient(int time)
@@ -79,10 +83,10 @@ public class Cash : IServeClient, INotifyPropertyChanged
 
     public async Task Start()
     {
-        while (IsOpen)
+        while (true)
         {
             await Task.Delay(10);
-            if (Clients.Count <= 0)
+            if (Clients.Count <= 0 || !isOpen)
             {
                 continue;
             }

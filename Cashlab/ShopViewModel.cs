@@ -1,54 +1,93 @@
-﻿using System.Windows.Media;
-namespace Cashlab;
+﻿namespace Cashlab;
 
 public class ShopViewModel : INotifyPropertyChanged
 {
     private ObservableCollection<Cash> cashes;
+    private Cash selectedCash;
+
     private int countClients;
-    private CommandTemplate addQueue;
+    private bool isOpen;
+    private QueueGenerator queueGenerator;
+    private CommandTemplate startStopQueue;
+    private CommandTemplate addCash;
+    private CommandTemplate deleteCash;
 
-    private int maxCountClientsGenerate;
-    private int maxTimeClientsGenerate;
-
-    public int MaxCountClientsGenerate
+    public QueueGenerator QueueGenerator
     {
-        get { return maxCountClientsGenerate; }
-        set { 
-            maxCountClientsGenerate = value;
-            OnPropertyChanged();
-        }
-    } 
-    public int MaxTimeClientsGenerate
-    {
-        get { return maxTimeClientsGenerate; }
-        set {
-            maxTimeClientsGenerate = value;
+        get { return queueGenerator; }
+        set
+        {
+            queueGenerator = value;
             OnPropertyChanged();
         }
     }
+    public bool IsOpen
+    {
+        get { return isOpen; }
+        set
+        {
+            isOpen = value;
+            OnPropertyChanged();
+
+            if (Cashes.Count > 0)
+            {
+                foreach (var cash in Cashes)
+                {
+                    cash.IsOpen = IsOpen;
+                }
+            }
+        }
+    }
+
 
     public int CountClients
     {
         get { return countClients; }
-        set { 
+        set
+        {
             countClients = value;
             OnPropertyChanged();
         }
     }
-    public CommandTemplate AddQueue
+    public CommandTemplate StartStopQueue
     {
         get
         {
-            return addQueue ??
-                (addQueue = new CommandTemplate(async obj =>
+            return startStopQueue ??
+                (startStopQueue = new CommandTemplate(obj =>
                 {
-                    List<Client> clients = await gg();
-                    CountClients = clients.Count;
-                    
-                    await GoQueue(clients);
+                    IsOpen = !IsOpen;
                 }));
         }
     }
+    public CommandTemplate AddCash
+    {
+        get
+        {
+            return addCash ??
+                (addCash = new CommandTemplate(async obj =>
+                {
+                    Cash cash = await CreateCash();
+
+                    Cashes.Add(cash);
+                    await cash.Start();
+                }));
+        }
+    }
+
+    public CommandTemplate DeleteCash
+    {
+        get
+        {
+            return deleteCash ??
+                (deleteCash = new CommandTemplate(async obj =>
+                {
+                    Cashes.Remove(obj as Cash);
+                }, obj => SelectedCash != null));
+        }
+    }
+
+
     public ObservableCollection<Cash> Cashes
     {
         get { return cashes; }
@@ -58,28 +97,30 @@ public class ShopViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    public Cash SelectedCash
+    {
+        get { return selectedCash; }
+        set
+        {
+            selectedCash = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ShopViewModel()
     {
+        int MaxTimeClientsGenerate = 1;
+        int MaxCountClientsGenerate = 50;
+
         Cashes = new ObservableCollection<Cash>();
-        List <Client> clients = new();
-        MaxTimeClientsGenerate = 1;
-        MaxCountClientsGenerate = 50;
-        for (int i = 0; i < 7; i++)
-        {
-            Cashes.Add(new Cash(i + 1));
-            Cashes[i].Start();
-        }
+        QueueGenerator = new QueueGenerator(MaxTimeClientsGenerate, MaxCountClientsGenerate);
+        IsOpen = true;
 
-        for (int i = 0; i <= 5; i++)
-        {
-            clients.Add(new Client(new SolidColorBrush(Colors.Black)));
-        }
-
-        GoQueue(clients);
+        StartGenerate();
     }
 
-    private async Task GoQueue(IEnumerable<Client> enumerable)
+
+    private async Task DistributionQueue(IEnumerable<Client> enumerable)
     {
         foreach (var item in enumerable)
         {
@@ -90,18 +131,33 @@ public class ShopViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task<List<Client>> gg()
+    private async Task<Cash> CreateCash()
     {
-        return await 
-            new QueueGenerator(
-                MaxTimeClientsGenerate, 
-                MaxCountClientsGenerate)
-            .Generate();
+        await Task.Delay(0);
+        return new Cash();
     }
+
+    private async Task<List<Client>> QueueGeneration()
+    {
+        return await QueueGenerator.Generate();
+    }
+
 
     public async Task StartGenerate()
     {
+        while (true)
+        {
+            await Task.Delay(10);
+            if (!isOpen || Cashes.Count <= 0)
+            {
+                continue;
+            }
 
+            var clients = QueueGeneration();
+            await DistributionQueue(await clients);
+
+
+        }
     }
 
     #region MVVM 
