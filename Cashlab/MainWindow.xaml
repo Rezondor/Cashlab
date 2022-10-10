@@ -22,13 +22,12 @@
         BorderThickness="1"
         BorderBrush="Black"
         Margin="10"
+        Padding="10"
         CornerRadius="5">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
                     <RowDefinition Height="67*"/>
                     <RowDefinition Height="7*"/>
-                    <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -38,7 +37,7 @@
 
 
                 <ListBox 
-                        Grid.Row="1" 
+                        Grid.Row="0" 
                         Grid.ColumnSpan="2" 
                         Grid.Column="0"
                         ItemsSource="{Binding Cashes}" 
@@ -192,9 +191,9 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                         Grid.Column="0"
-                        Grid.Row="2"
+                        Grid.Row="1"
                 >
-
+                    
                     <Button 
                     Command="{Binding StartStopQueue, IsAsync=True}" 
                     Margin="5"
