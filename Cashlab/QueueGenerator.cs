@@ -11,6 +11,17 @@ public class QueueGenerator
     private int clientCountGenerate;
     private int clientTimeGenerate;
 
+    private QueueLog log;
+
+    public QueueLog Log
+    {
+        get { return log; }
+        set { 
+            log = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int MinGenerateTime
     {
         get { return minGenerateTime; }
@@ -74,12 +85,17 @@ public class QueueGenerator
     public QueueGenerator(int maxGenerateTime, int maxClientCount)
     {
         random= new Random();
+
+        Log = new QueueLog("Генератор очереди");
+
         MinClientCount = 0;
+        MaxClientCount = maxClientCount;
+
         MinGenerateTime = 1;
         MaxGenerateTime = maxGenerateTime;
-        MaxClientCount = maxClientCount;
-        /*ClientCountGenerate = 0;
-        ClientTimeGenerate = 0;*/
+
+        ClientCountGenerate = 0;
+        ClientTimeGenerate = 0;
     }
 
     public async Task<List<Client>> Generate()
@@ -101,7 +117,7 @@ public class QueueGenerator
 
             clients.Add(new Client(color));
         }
-
+        await Log.AddCountClientGeneratedEntity(ClientCountGenerate,ClientTimeGenerate);
         await wait;
 
         return clients;

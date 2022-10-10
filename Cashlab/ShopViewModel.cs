@@ -4,13 +4,64 @@ public class ShopViewModel : INotifyPropertyChanged
 {
     private ObservableCollection<Cash> cashes;
     private Cash selectedCash;
-
-    private int countClients;
-    private bool isOpen;
     private QueueGenerator queueGenerator;
+    private bool isOpen;
+
+
+    #region Command
+
     private CommandTemplate startStopQueue;
     private CommandTemplate addCash;
     private CommandTemplate deleteCash;
+    private CommandTemplate openAddInfo;
+    public CommandTemplate OpenAddInfo
+    {
+        get
+        {
+            return openAddInfo ??= new CommandTemplate(obj =>
+            {
+                CashRegisterStatistics window = new CashRegisterStatistics(SelectedCash);
+                window.ShowDialog();
+            }, obj => obj is not null);
+        }
+    }
+    public CommandTemplate StartStopQueue
+    {
+        get
+        {
+            return startStopQueue ??= new CommandTemplate(obj =>
+            {
+                IsOpen = !IsOpen;
+            });
+        }
+    }
+    public CommandTemplate AddCash
+    {
+        get
+        {
+            return addCash ??= new CommandTemplate(async obj =>
+            {
+                Cash cash = await CreateCash();
+
+                Cashes.Add(cash);
+                await cash.Start();
+            });
+        }
+    }
+    public CommandTemplate DeleteCash
+    {
+        get
+        {
+            return deleteCash ??= new CommandTemplate(async obj =>
+            {
+                await Task.Delay(0);
+                Cashes.Remove((Cash)obj);
+            }, obj => SelectedCash != null);
+        }
+    }
+    
+
+    #endregion
 
     public QueueGenerator QueueGenerator
     {
@@ -18,6 +69,24 @@ public class ShopViewModel : INotifyPropertyChanged
         set
         {
             queueGenerator = value;
+            OnPropertyChanged();
+        }
+    }
+    public ObservableCollection<Cash> Cashes
+    {
+        get { return cashes; }
+        set
+        {
+            cashes = value;
+            OnPropertyChanged();
+        }
+    }
+    public Cash SelectedCash
+    {
+        get { return selectedCash; }
+        set
+        {
+            selectedCash = value;
             OnPropertyChanged();
         }
     }
@@ -40,72 +109,6 @@ public class ShopViewModel : INotifyPropertyChanged
     }
 
 
-    public int CountClients
-    {
-        get { return countClients; }
-        set
-        {
-            countClients = value;
-            OnPropertyChanged();
-        }
-    }
-    public CommandTemplate StartStopQueue
-    {
-        get
-        {
-            return startStopQueue ??
-                (startStopQueue = new CommandTemplate(obj =>
-                {
-                    IsOpen = !IsOpen;
-                }));
-        }
-    }
-    public CommandTemplate AddCash
-    {
-        get
-        {
-            return addCash ??
-                (addCash = new CommandTemplate(async obj =>
-                {
-                    Cash cash = await CreateCash();
-
-                    Cashes.Add(cash);
-                    await cash.Start();
-                }));
-        }
-    }
-
-    public CommandTemplate DeleteCash
-    {
-        get
-        {
-            return deleteCash ??
-                (deleteCash = new CommandTemplate(async obj =>
-                {
-                    Cashes.Remove(obj as Cash);
-                }, obj => SelectedCash != null));
-        }
-    }
-
-
-    public ObservableCollection<Cash> Cashes
-    {
-        get { return cashes; }
-        set
-        {
-            cashes = value;
-            OnPropertyChanged();
-        }
-    }
-    public Cash SelectedCash
-    {
-        get { return selectedCash; }
-        set
-        {
-            selectedCash = value;
-            OnPropertyChanged();
-        }
-    }
 
     public ShopViewModel()
     {
@@ -116,7 +119,7 @@ public class ShopViewModel : INotifyPropertyChanged
         QueueGenerator = new QueueGenerator(MaxTimeClientsGenerate, MaxCountClientsGenerate);
         IsOpen = true;
 
-        StartGenerate();
+        StartQueueGenerate();
     }
 
 
@@ -143,7 +146,7 @@ public class ShopViewModel : INotifyPropertyChanged
     }
 
 
-    public async Task StartGenerate()
+    public async Task StartQueueGenerate()
     {
         while (true)
         {
@@ -159,6 +162,8 @@ public class ShopViewModel : INotifyPropertyChanged
 
         }
     }
+
+
 
     #region MVVM 
     public event PropertyChangedEventHandler? PropertyChanged;

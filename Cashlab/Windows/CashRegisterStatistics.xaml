@@ -1,0 +1,65 @@
+﻿<Window x:Class="Cashlab.Windows.CashRegisterStatistics"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cashlab.Windows"
+        xmlns:main="clr-namespace:Cashlab.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=main:SelectedCashRegistersViewModel}"
+        mc:Ignorable="d"
+        Title="CashRegisterStatistics" 
+        Height="450" 
+        Width="500"
+        WindowStartupLocation="CenterOwner">
+    <Border 
+        Margin="10"
+        BorderBrush="Black"
+        CornerRadius="10"
+        BorderThickness="1"
+        Padding="10"
+        DataContext="{Binding SelectedCash}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <StackPanel 
+                Grid.Row="0">
+                
+                <TextBlock 
+                    Margin="0, 5" DataContext="{Binding Log}"  Text="{Binding NameLog}"/>
+                <TextBlock 
+                    Text="{Binding Path = Clients.Count, StringFormat= Всего человек в очереди - {0}}" 
+                    Margin="0, 5"/>
+                <TextBlock 
+                    Text="{Binding CashRegisterStatistic.ServiceClientCount, StringFormat= Всего человек обслужено - {0}}" 
+                    Margin="0, 5"/>
+                <TextBlock 
+                    Text="{Binding CashRegisterStatistic.TotalServiceTime, StringFormat= Потрачено времени - {0:#,###} секунд}" 
+                    Margin="0, 5"/>
+                <TextBlock 
+                    Text="{Binding CashRegisterStatistic.AVGServiceTime, StringFormat= Среднее время обслуживания - {0:F3} с}" 
+                    Margin="0, 5"/>
+
+            </StackPanel>
+            <Grid
+                Grid.Row="1" 
+                >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock 
+                    Text="Логи кассы"
+                    Grid.Row="0"/>
+                <ListBox 
+                    DataContext="{Binding Log}" 
+                    ItemsSource="{Binding Logs}"
+                    BorderThickness="0"
+                    Grid.Row="1"/>
+
+            </Grid>
+        </Grid>
+
+    </Border>
+</Window>

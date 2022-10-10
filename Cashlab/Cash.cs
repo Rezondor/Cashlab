@@ -3,6 +3,7 @@
 public class Cash : IServeClient, INotifyPropertyChanged
 {
     private static int CountCash = 0;
+
     private int id = 0;
     private ObservableCollection<Client> clients;
     private bool isOpen = true;
@@ -10,6 +11,28 @@ public class Cash : IServeClient, INotifyPropertyChanged
     private int minTimeService;
     private int maxTimeService;
 
+    private CashLog log;
+    private Statistics cashRegisterStatistic;
+
+   
+    public CashLog Log
+    {
+        get { return log; }
+        set
+        {
+            log = value;
+            OnPropertyChanged();
+        }
+    }
+    public Statistics CashRegisterStatistic
+    {
+        get { return cashRegisterStatistic; }
+        set
+        {
+            cashRegisterStatistic = value;
+            OnPropertyChanged();
+        }
+    }
     public ObservableCollection<Client> Clients
     {
         get { return clients; }
@@ -37,8 +60,6 @@ public class Cash : IServeClient, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
-
     public bool IsOpen
     {
         get { return isOpen; }
@@ -57,6 +78,8 @@ public class Cash : IServeClient, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    
     public Cash()
     {
         CountCash += 1;
@@ -64,15 +87,20 @@ public class Cash : IServeClient, INotifyPropertyChanged
 
         Clients = new();
         random = new Random();
-        
+        Log = new CashLog($"Касса - {id}");
+        CashRegisterStatistic = new Statistics();
+
         MinTimeService = 1;
         MaxTimeService = 5;
     }
 
     public async Task ServeClient(int time)
     {
-        await Task.Delay(time);
+        await Log.AddClientServedEntity(Clients[0], time);
+        await CashRegisterStatistic.AddTimeServiceClient(time);
+        await CashRegisterStatistic.AddCountServiceClient(1);
         Clients.RemoveAt(0);
+        await Task.Delay(time);
     }
 
     public async Task AddClient(Client client)

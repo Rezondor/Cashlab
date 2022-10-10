@@ -7,4 +7,7 @@ global using System.Runtime.CompilerServices;
 global using System.Threading.Tasks;
 global using Cashlab.Interfaces;
 global using Cashlab.LoggingClasses;
+global using Cashlab.StatisticsClasses;
+global using Cashlab.Windows;
+global using Cashlab.ViewModels;
 global using System.Runtime;
