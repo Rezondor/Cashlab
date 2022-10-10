@@ -9,7 +9,7 @@ public class QueueLog : MainLog
 
     public async Task AddCountClientGeneratedEntity(int count, int time)
     {
-        string entry = $"| Создано {count:D4} клиентов за {time:D2} секунд";
+        string entry = $"| Создано {count:D4} клиентов за {time:D3} секунд";
         await AddEntry(entry);
     }
 

@@ -39,7 +39,8 @@ public class Statistics : INotifyPropertyChanged
     public double AVGServiceTime
     {
         get { return avgServiceTime; }
-        private set { 
+        private set
+        {
             avgServiceTime = value;
             OnPropertyChanged();
         }
@@ -51,7 +52,7 @@ public class Statistics : INotifyPropertyChanged
         if (totalTime == 0)
             totalTime = 1;
         totalTime = totalTime / 1000;
-        AVGServiceTime = totalTime/ServiceClientCount;
+        AVGServiceTime = totalTime / ServiceClientCount;
     }
     public async Task AddCountServiceClient(int count)
     {

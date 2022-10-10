@@ -61,10 +61,10 @@ public class ShopViewModel : INotifyPropertyChanged
                 cash.IsOpen = false;
                 Cashes.Remove(cash);
                 await DistributionQueue(cash.Clients);
-            }, obj => SelectedCash != null);
+            }, obj => obj is not null);
         }
     }
-    
+
 
     #endregion
 
@@ -150,7 +150,7 @@ public class ShopViewModel : INotifyPropertyChanged
         {
             item.Color = new SolidColorBrush(Colors.Green);
         }
-        
+
     }
 
     private async Task MaxCountClientQueue(ObservableCollection<Cash> cashes)
@@ -168,7 +168,7 @@ public class ShopViewModel : INotifyPropertyChanged
     private async Task SetYellowCashes(ObservableCollection<Cash> cashes)
     {
         await Task.Delay(0);
-       
+
 
         foreach (var item in cashes)
         {
@@ -182,7 +182,7 @@ public class ShopViewModel : INotifyPropertyChanged
         while (true)
         {
             await Task.Delay(10);
-            if (!IsOpen || cashes.Count<=0)
+            if (!IsOpen || cashes.Count <= 0)
             {
                 continue;
             }
@@ -192,15 +192,15 @@ public class ShopViewModel : INotifyPropertyChanged
 
             Task.WaitAll(max, min);
         }
-       
-        
+
+
 
     }
 
     private async Task<Cash> CreateCash()
     {
         await Task.Delay(0);
-        return new Cash() { IsOpen = IsOpen};
+        return new Cash() { IsOpen = IsOpen };
     }
 
     private async Task<List<Client>> QueueGeneration()

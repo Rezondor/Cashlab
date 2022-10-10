@@ -9,15 +9,17 @@
         mc:Ignorable="d"
         Title="CashRegisterStatistics" 
         Height="450" 
-        Width="500"
-        WindowStartupLocation="CenterOwner">
+        Width="550"
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource ForWindow}">
     <Border 
         Margin="10"
         BorderBrush="Black"
         CornerRadius="10"
         BorderThickness="1"
         Padding="10"
-        DataContext="{Binding SelectedCash}">
+        DataContext="{Binding SelectedCash}"
+        Style="{StaticResource ForMainBorder}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
@@ -35,7 +37,7 @@
                     Text="{Binding CashRegisterStatistic.ServiceClientCount, StringFormat= Всего человек обслужено - {0}}" 
                     Margin="0, 5"/>
                 <TextBlock 
-                    Text="{Binding CashRegisterStatistic.TotalServiceTime, StringFormat= Потрачено времени - {0:#,###} секунд}" 
+                    Text="{Binding CashRegisterStatistic.TotalServiceTime, StringFormat= Потрачено времени - {0:#с ###мс} }" 
                     Margin="0, 5"/>
                 <TextBlock 
                     Text="{Binding CashRegisterStatistic.AVGServiceTime, StringFormat= Среднее время обслуживания - {0:F3} с}" 
@@ -43,8 +45,7 @@
 
             </StackPanel>
             <Grid
-                Grid.Row="1" 
-                >
+                Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
@@ -55,6 +56,7 @@
                 <ListBox 
                     DataContext="{Binding Log}" 
                     ItemsSource="{Binding Logs}"
+                    Background="Transparent"
                     BorderThickness="0"
                     Grid.Row="1"/>
 

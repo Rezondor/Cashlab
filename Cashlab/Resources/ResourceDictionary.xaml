@@ -1,9 +1,56 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:tk ="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:local="clr-namespace:Cashlab">
 
-    <Color x:Name="Main" x:Key="#030C0C"/>
-    
-    <Style TargetType="Window">
-        <Setter Property="Background" Value="{StaticResource ResourceKey=Main}"/>
+    <!--Задний цвет - #030C0C
+    Задний основной цвет - 091A1D
+    Цвет бордеров - 1C878B
+    Цвет текста - 15B8AF-->
+
+    <Style TargetType="Window" x:Key="ForWindow">
+        <Setter Property="Background" Value="#030C0C"/>
     </Style>
+
+    <Style TargetType="Border" x:Key="ForMainBorder">
+        <Setter Property="BorderBrush" Value="#1C878B"/>
+        <Setter Property="Background" Value="#091A1D"/>
+    </Style>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="#15B8AF"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>   
+    <Style TargetType="Button">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="#15B8AF"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="#1C878B"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="4">
+                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="border" Value="#030C0C"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#331C878B"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type tk:IntegerUpDown}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="#1C878B"/>
+        <Setter Property="Foreground" Value="#15B8AF"/>
+    </Style>
+
 </ResourceDictionary>

@@ -10,20 +10,20 @@
         Title="MainWindow" 
         Height="700" 
         Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource ForWindow}"
+        >
     <Window.DataContext>
         <local:ShopViewModel/>
     </Window.DataContext>
-
     <ScrollViewer
         VerticalScrollBarVisibility="Auto">
         <Border
-        Background="Transparent"
-        BorderThickness="1"
-        BorderBrush="Black"
+        BorderThickness="0"
         Margin="10"
         Padding="10"
-        CornerRadius="5">
+        CornerRadius="5"
+            >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="67*"/>
@@ -35,241 +35,268 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-
-                <ListBox 
-                        Grid.Row="0" 
-                        Grid.ColumnSpan="2" 
-                        Grid.Column="0"
+                <Border
+                    Grid.Row="0" 
+                    Grid.ColumnSpan="2" 
+                    Grid.Column="0"
+                    BorderThickness="1"
+                    Margin="10"
+                    Padding="10"
+                    CornerRadius="10"
+                    Style="{StaticResource ForMainBorder}"
+                    >
+                    <ListBox 
                         ItemsSource="{Binding Cashes}" 
                         SelectedItem="{Binding SelectedCash}"
                         Margin="10" 
                         Height="300" 
                         ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                         BorderBrush="Transparent" 
-                        Background="Transparent" 
+                        Background="{x:Null}" 
                         BorderThickness="0">
-                    <beh:Interaction.Triggers>
-                        <beh:EventTrigger EventName="MouseDoubleClick">
-                            <beh:InvokeCommandAction 
+                        <beh:Interaction.Triggers>
+                            <beh:EventTrigger EventName="MouseDoubleClick">
+                                <beh:InvokeCommandAction 
                                     Command="{Binding OpenAddInfo}" 
                                     CommandParameter="{Binding SelectedCash}"
                                     />
-                        </beh:EventTrigger>
-                    </beh:Interaction.Triggers>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel 
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+                            </beh:EventTrigger>
+                        </beh:Interaction.Triggers>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel 
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border 
-                                    BorderBrush="Black"
-                                    BorderThickness="1"
-                                    CornerRadius="5"
-                                    Height="270"
-                                    Background="Transparent"
-                                    >
-
-
-                                <Grid 
-                            VerticalAlignment="Top" 
-                            Margin="10" 
-                            HorizontalAlignment="Center"
-                            >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="55"/>
-                                        <RowDefinition Height="140"/>
-                                        <RowDefinition Height="50"/>
-                                    </Grid.RowDefinitions>
-                                    <StackPanel 
-                                    Grid.Row="0">
-
-                                        <TextBlock 
-                                        Text="{Binding StringFormat=Касса №{0}, Path =Id}" 
-                                        Margin="5" 
-                                        HorizontalAlignment="Center"/>
-
-                                        <TextBlock 
-                                        Text="{Binding StringFormat=Очередь: {0}, Path =Clients.Count}" 
-                                        Margin="5" 
-                                        HorizontalAlignment="Center"/>
-                                    </StackPanel>
-
-
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
+                                BorderBrush="#1C878B"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Height="270"
+                                Background="{x:Null}"
+                                >
                                     <Grid 
-                                    Width="100" 
-                                    Grid.Row="1"
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Top">
-
+                                        VerticalAlignment="Top" 
+                                        Margin="10" 
+                                        HorizontalAlignment="Center"
+                                        Background="Transparent"
+                                        >
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition/>
+                                            <RowDefinition Height="55"/>
+                                            <RowDefinition Height="140"/>
+                                            <RowDefinition Height="50"/>
                                         </Grid.RowDefinitions>
-
-                                        <Rectangle 
-                                    Grid.Row="0" 
-                                    Height="20" 
-                                    Width="30" 
-                                    Fill="{Binding Color}" 
-                                    Stroke="Black"
-                                    RadiusX="5" 
-                                    RadiusY="5" 
-                                    StrokeThickness="1"/>
-
-                                        <ListBox  
-                                    Grid.Row="1" 
-                                    ItemsSource="{Binding Clients}" 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Top"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                                    BorderBrush="Transparent" 
-                                    Background="Transparent" 
-                                    BorderThickness="0">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Rectangle 
-                                                Height="10"
-                                                Width="10"
-                                                RadiusX="1"
-                                                RadiusY="1"
-                                                Fill="{Binding Path = Color}"
-                                                Margin="2" Stroke="Black"/>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Grid>
-
-                                    <Grid
-                                    Grid.Row="2">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock
-                                        Grid.Row="0" 
-                                        Text="Время обслуживания"/>
                                         <StackPanel 
-                                        Orientation="Horizontal" 
-                                        Grid.Row="1" >
+                                            Grid.Row="0">
 
-                                            <tk:IntegerUpDown  
-                                                Value="{Binding MinTimeService}" 
-                                                Minimum="0"
-                                                Maximum="{Binding MaxTimeService}"
-                                                Width="50" 
-                                                Margin="2" 
-                                                DefaultValue="0" 
-                                                CultureInfo="ru-RU" />
+                                            <TextBlock 
+                                                Text="{Binding StringFormat=Касса №{0}, Path =Id}" 
+                                                Margin="5" 
+                                                HorizontalAlignment="Center"/>
 
-                                            <tk:IntegerUpDown  
-                                                Value="{Binding MaxTimeService}" 
-                                                Minimum="{Binding MinTimeService}"
-                                                Width="50" 
-                                                Margin="2" 
-                                                DefaultValue="0" 
-                                                CultureInfo="ru-RU" />
-
+                                            <TextBlock 
+                                                Text="{Binding StringFormat=Очередь: {0}, Path =Clients.Count}" 
+                                                Margin="5" 
+                                                HorizontalAlignment="Center"/>
                                         </StackPanel>
 
+
+                                        <Grid 
+                                            Width="100" 
+                                            Grid.Row="1"
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Top">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <Rectangle 
+                                                Grid.Row="0" 
+                                                Height="20" 
+                                                Width="30" 
+                                                Fill="{Binding Color}" 
+                                                Stroke="#1C878B"
+                                                RadiusX="5" 
+                                                RadiusY="5" 
+                                                StrokeThickness="1"/>
+
+                                            <ItemsControl  
+                                                Grid.Row="1" 
+                                                ItemsSource="{Binding Clients}" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Top"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                                BorderBrush="Transparent" 
+                                                Background="Transparent" 
+                                                BorderThickness="0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Rectangle 
+                                                            Height="10"
+                                                            Width="10"
+                                                            RadiusX="1"
+                                                            RadiusY="1"
+                                                            Fill="{Binding Path = Color}"
+                                                            Margin="2" 
+                                                            Stroke="#1C878B"/>  
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
+
+                                        <Grid
+                                            Grid.Row="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock
+                                                Grid.Row="0" 
+                                                Text="Время обслуживания"/>
+                                            <Grid 
+                                                Grid.Row="1" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <tk:IntegerUpDown
+                                                    Grid.Column="0"
+                                                    Value="{Binding MinTimeService}" 
+                                                    Minimum="0"
+                                                    Maximum="{Binding MaxTimeService}"
+                                                    HorizontalAlignment="Left"
+                                                    Width="50" 
+                                                    Margin="2" 
+                                                    DefaultValue="0" 
+                                                    CultureInfo="ru-RU" />
+
+                                                <tk:IntegerUpDown  
+                                                    Grid.Column="1"
+                                                    Value="{Binding MaxTimeService}" 
+                                                    Minimum="{Binding MinTimeService}"
+                                                    HorizontalAlignment="Right"
+                                                    Width="50" 
+                                                    Margin="2" 
+                                                    DefaultValue="0" 
+                                                    CultureInfo="ru-RU" />
+
+                                            </Grid>
+
+                                        </Grid>
                                     </Grid>
-                                </Grid>
 
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                <StackPanel 
-                Orientation="Vertical" 
-                Margin="5"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                        Grid.Column="0"
-                        Grid.Row="1"
-                >
-                    
-                    <Button 
-                    Command="{Binding StartStopQueue, IsAsync=True}" 
+                </Border>
+
+                <Border
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    BorderThickness="1"
+                    Margin="10"
+                    Padding="10"
+                    CornerRadius="10"
+                    Style="{StaticResource ForMainBorder}">
+                    <StackPanel 
+                    Orientation="Vertical" 
                     Margin="5"
-                    Content="Запуск/Остановка"
-                    />
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock 
-                        Text="Максимальное время генирации очереди -"
-                        Margin="5"/>
+                        <Button 
+                            Command="{Binding StartStopQueue, IsAsync=True}" 
+                            Width="140"
+                            Height="30"
+                            Margin="5"
+                            Content="Запуск/Остановка"
+                            />
 
-                        <tk:IntegerUpDown  
-                        Value="{Binding QueueGenerator.MaxGenerateTime}"
-                        Minimum="{Binding QueueGenerator.MinGenerateTime}"
-                        Width="50" 
-                        Margin="5" 
-                        DefaultValue="0" 
-                        CultureInfo="ru-RU" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock 
+                                Text="Максимальное время генирации очереди -"
+                                Margin="5"/>
+
+                            <tk:IntegerUpDown  
+                                Value="{Binding QueueGenerator.MaxGenerateTime}"
+                                Minimum="{Binding QueueGenerator.MinGenerateTime}"
+                                Width="50" 
+                                Margin="5" 
+                                DefaultValue="0" 
+                                CultureInfo="ru-RU" 
+                                />
+                        </StackPanel>
+
+                        <StackPanel 
+                            Orientation="Horizontal">
+                            <TextBlock 
+                                Text="Максимальное кол-во человек для генирации очереди -"
+                                Margin="5"/>
+                            <tk:IntegerUpDown  
+                                Value="{Binding QueueGenerator.MaxClientCount}"
+                                Width="50" 
+                                Margin="5" 
+                                DefaultValue="0" 
+                                Minimum= "{Binding QueueGenerator.MinClientCount}"
+                                Maximum="2000"
+                                CultureInfo="ru-RU" >
+                            </tk:IntegerUpDown>
+
+
+                        </StackPanel>
+
+                        <Button 
+                            x:Name="button" 
+                            Height="30"
+                            Width="140"
+                            Command="{Binding AddCash}"
+                            Content="Добавить кассу"
+                            Margin="5"/>
+                        <Button 
+                            Width="140"
+                            Height="30"
+                            Command="{Binding DeleteCash}"
+                            CommandParameter="{Binding SelectedCash}"
+                            Content="Удалить кассу"
+                            Margin="5" />
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock 
-                        Text="Максимальное кол-во человек для генирации очереди -"
-                        Margin="5"/>
-                        <tk:IntegerUpDown  
-                        Value="{Binding QueueGenerator.MaxClientCount}"
-                        Width="50" 
-                        Margin="5" 
-                        DefaultValue="0" 
-                        Minimum= "{Binding QueueGenerator.MinClientCount}"
-                        Maximum="2000"
-                        CultureInfo="ru-RU" />
-
-
-                    </StackPanel>
-
-                    <Button 
-                    Width="auto"
-                    Height="20"
-                    Command="{Binding AddCash}"
-                    Content="+"
-                    Margin="5"/>
-                    <Button 
-                    Width="auto"
-                    Height="20"
-                    Command="{Binding DeleteCash}"
-                    CommandParameter="{Binding SelectedCash}"
-                    Content="-"
-                     Margin="5"/>
-
-                </StackPanel>
+                </Border>
                 <Border
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="10"
                     Padding="10"
                     BorderThickness="1"
-                    BorderBrush="Black"
-                    CornerRadius="10">
+                    CornerRadius="10"
+                    Style="{StaticResource ForMainBorder}">
                     <StackPanel
-                    
-                    DataContext="{Binding QueueGenerator}">
-                        <TextBlock Text="{Binding Log.NameLog, StringFormat = Логи - {0} }"/>
+                        DataContext="{Binding QueueGenerator}">
+                        <TextBlock 
+                            Text="{Binding Log.NameLog, StringFormat = Логи - {0} }"
+                            FontSize="14"
+                            Margin="5"/>
                         <ListBox 
-                        DataContext="{Binding Log}"
-                        ItemsSource="{Binding Logs}"
+                            DataContext="{Binding Log}"
+                            ItemsSource="{Binding Logs}"
+                            Background="Transparent"
                             BorderThickness="0"
-                            BorderBrush="Transparent" Height="202"/>
-
-
+                            BorderBrush="Transparent" 
+                            Height="202"
+                            HorizontalContentAlignment="Left"/>
                     </StackPanel>
                 </Border>
-
             </Grid>
         </Border>
-
     </ScrollViewer>
-
 </Window>

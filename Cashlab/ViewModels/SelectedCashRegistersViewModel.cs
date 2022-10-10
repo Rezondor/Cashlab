@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Cashlab.ViewModels;
 
-namespace Cashlab.ViewModels;
-
-public class SelectedCashRegistersViewModel:INotifyPropertyChanged
+public class SelectedCashRegistersViewModel : INotifyPropertyChanged
 {
     private Cash selectedCash;
 
     public Cash SelectedCash
     {
         get { return selectedCash; }
-        set { 
+        set
+        {
             selectedCash = value;
             OnPropertyChanged();
         }

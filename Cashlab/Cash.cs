@@ -5,30 +5,28 @@ namespace Cashlab;
 public class Cash : IServeClient, INotifyPropertyChanged
 {
     private static int CountCash = 0;
+    private Random random;
 
     private int id = 0;
     private ObservableCollection<Client> clients;
     private bool isOpen = true;
-    private Random random;
     private int minTimeService;
     private int maxTimeService;
+    private SolidColorBrush color;
 
     private CashLog log;
     private Statistics cashRegisterStatistic;
 
-    private SolidColorBrush color;
 
     public SolidColorBrush Color
     {
         get { return color; }
-        set {
+        set
+        {
             color = value;
             OnPropertyChanged();
         }
     }
-
-
-
     public CashLog Log
     {
         get { return log; }
@@ -93,7 +91,7 @@ public class Cash : IServeClient, INotifyPropertyChanged
         }
     }
 
-    
+
     public Cash()
     {
         CountCash += 1;

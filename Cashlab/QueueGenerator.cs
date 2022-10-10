@@ -16,7 +16,8 @@ public class QueueGenerator
     public QueueLog Log
     {
         get { return log; }
-        set { 
+        set
+        {
             log = value;
             OnPropertyChanged();
         }
@@ -84,7 +85,7 @@ public class QueueGenerator
 
     public QueueGenerator(int maxGenerateTime, int maxClientCount)
     {
-        random= new Random();
+        random = new Random();
 
         Log = new QueueLog("Генератор очереди");
 
