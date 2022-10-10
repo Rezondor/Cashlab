@@ -1,4 +1,6 @@
-﻿namespace Cashlab;
+﻿using System.Windows.Media;
+
+namespace Cashlab;
 
 public class ShopViewModel : INotifyPropertyChanged
 {
@@ -55,7 +57,10 @@ public class ShopViewModel : INotifyPropertyChanged
             return deleteCash ??= new CommandTemplate(async obj =>
             {
                 await Task.Delay(0);
-                Cashes.Remove((Cash)obj);
+                Cash cash = (Cash)obj;
+                cash.IsOpen = false;
+                Cashes.Remove(cash);
+                await DistributionQueue(cash.Clients);
             }, obj => SelectedCash != null);
         }
     }
@@ -112,20 +117,21 @@ public class ShopViewModel : INotifyPropertyChanged
 
     public ShopViewModel()
     {
-        int MaxTimeClientsGenerate = 1;
+        int MaxTimeClientsGenerate = 10;
         int MaxCountClientsGenerate = 50;
 
         Cashes = new ObservableCollection<Cash>();
         QueueGenerator = new QueueGenerator(MaxTimeClientsGenerate, MaxCountClientsGenerate);
-        IsOpen = true;
+        IsOpen = false;
 
         StartQueueGenerate();
+        SearchMinMax();
     }
 
 
-    private async Task DistributionQueue(IEnumerable<Client> enumerable)
+    private async Task DistributionQueue(IEnumerable<Client> clients)
     {
-        foreach (var item in enumerable)
+        foreach (var item in clients)
         {
             await Cashes.
                  Where(c => c.Clients.Count == Cashes.Min(c => c.Clients.Count)).
@@ -134,10 +140,67 @@ public class ShopViewModel : INotifyPropertyChanged
         }
     }
 
+    private async Task MinCountClientQueue(ObservableCollection<Cash> cashes)
+    {
+        await Task.Delay(0);
+        int min = cashes.Min(c => c.Clients.Count);
+        var cashesMin = cashes.Where(c => c.Clients.Count == min);
+
+        foreach (var item in cashesMin)
+        {
+            item.Color = new SolidColorBrush(Colors.Green);
+        }
+        
+    }
+
+    private async Task MaxCountClientQueue(ObservableCollection<Cash> cashes)
+    {
+        await Task.Delay(0);
+        int min = cashes.Max(c => c.Clients.Count);
+        var cashesMax = cashes.Where(c => c.Clients.Count == min);
+
+        foreach (var item in cashesMax)
+        {
+            item.Color = new SolidColorBrush(Colors.Red);
+        }
+
+    }
+    private async Task SetYellowCashes(ObservableCollection<Cash> cashes)
+    {
+        await Task.Delay(0);
+       
+
+        foreach (var item in cashes)
+        {
+            item.Color = new SolidColorBrush(Colors.Yellow);
+        }
+
+    }
+
+    private async Task SearchMinMax()
+    {
+        while (true)
+        {
+            await Task.Delay(10);
+            if (!IsOpen || cashes.Count<=0)
+            {
+                continue;
+            }
+            await SetYellowCashes(Cashes);
+            var max = MaxCountClientQueue(Cashes);
+            var min = MinCountClientQueue(Cashes);
+
+            Task.WaitAll(max, min);
+        }
+       
+        
+
+    }
+
     private async Task<Cash> CreateCash()
     {
         await Task.Delay(0);
-        return new Cash();
+        return new Cash() { IsOpen = IsOpen};
     }
 
     private async Task<List<Client>> QueueGeneration()

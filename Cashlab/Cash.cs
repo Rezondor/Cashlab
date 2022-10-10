@@ -1,4 +1,6 @@
-﻿namespace Cashlab;
+﻿using System.Windows.Media;
+
+namespace Cashlab;
 
 public class Cash : IServeClient, INotifyPropertyChanged
 {
@@ -14,7 +16,19 @@ public class Cash : IServeClient, INotifyPropertyChanged
     private CashLog log;
     private Statistics cashRegisterStatistic;
 
-   
+    private SolidColorBrush color;
+
+    public SolidColorBrush Color
+    {
+        get { return color; }
+        set {
+            color = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+
     public CashLog Log
     {
         get { return log; }
@@ -87,6 +101,7 @@ public class Cash : IServeClient, INotifyPropertyChanged
 
         Clients = new();
         random = new Random();
+        Color = new SolidColorBrush(Colors.Yellow);
         Log = new CashLog($"Касса - {id}");
         CashRegisterStatistic = new Statistics();
 

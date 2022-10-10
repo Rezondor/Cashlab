@@ -51,7 +51,7 @@ public class Statistics : INotifyPropertyChanged
         if (totalTime == 0)
             totalTime = 1;
         totalTime = totalTime / 1000;
-        AVGServiceTime = ServiceClientCount / totalTime;
+        AVGServiceTime = totalTime/ServiceClientCount;
     }
     public async Task AddCountServiceClient(int count)
     {

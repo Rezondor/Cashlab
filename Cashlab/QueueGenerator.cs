@@ -117,8 +117,9 @@ public class QueueGenerator
 
             clients.Add(new Client(color));
         }
-        await Log.AddCountClientGeneratedEntity(ClientCountGenerate,ClientTimeGenerate);
         await wait;
+        await Log.AddCountClientGeneratedEntity(ClientCountGenerate, ClientTimeGenerate);
+
 
         return clients;
     }
